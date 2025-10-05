@@ -49,7 +49,7 @@ contract KipuBank {
     error ErrContractFailed();
 
     
-    // Modificador.
+
     // @notice Mientras el valor a depositar es mayor que cero
     modifier montoValido() {
         if (msg.value == 0) revert ErrMontoCero();
@@ -57,13 +57,21 @@ contract KipuBank {
         _;
     }
     
+    /** 
+        @notice Valida que el monto a depositar no sea mayor que el BankCap.
+        @dev BankCap es el limite maximo del banco.
+        
+        Tecnicamente esta funcion es identica ala que esta dentro de _depositar() pero sin sumar
+        el balance total del banco. La dejo para mayor completitud __"completness"__ del Trabajo Final.
+    */
     modifier noExcedeLimiteBankCap(){ 
-        if ( msg.value > bankCap) {
+        if ( msg.value  > bankCap) {
             revert ErrDepositoExcedeLimite( msg.value, totalBancoBalanceWei, bankCap); 
         }
         _;
     }
 
+    //  @notice Valida que el monto introducido no exceda el limite maximo de retiro por TX
     modifier noExcedeLimiteExtraccion(){ 
         if ( msg.value > limitMaxRetiroWei) {
             revert ErrRetiroExcedeLimite( limitMaxRetiroWei); 
@@ -73,25 +81,26 @@ contract KipuBank {
 
     /**
      * @notice Deposito relizado correctamente.
-     * @param _user addr del usuario.
-     * @param _monto   Monto depositado (wei).
-     * @param _balanceUsuario Balance total del Usuario.
-     * @param _balanceBanco Balance total del Banco.
+     * @param user addr del usuario.
+     * @param monto   Monto depositado (wei).
+     * @param balanceUsuario Balance total del Usuario.
+     * @param balanceBanco Balance total del Banco.
      */
-    event Deposito(address indexed _user, uint256 _monto, uint256 _balanceUsuario, uint256 _balanceBanco);
+    event Deposito(address indexed user, uint256 monto, uint256 balanceUsuario, uint256 balanceBanco);
 
      /**
      * @notice Retiro exitoso por parte de un usuario.
-     * @param _user Dirección del usuario que retiró.
-     * @param _monto   Monto retirado en wei.
-     * @param _balanceUsuario Balance total del Usuario.
-     * @param _balanceBanco Balance total del Banco.
+     * @param user Dirección del usuario que retiró.
+     * @param monto   Monto retirado en wei.
+     * @param balanceUsuario Balance total del Usuario.
+     * @param balanceBanco Balance total del Banco.
      */
-    event Retiro(address indexed _user, uint256 _monto, uint256 _balanceUsuario, uint256 _balanceBanco);
+    event Retiro(address indexed user, uint256 monto, uint256 balanceUsuario, uint256 balanceBanco);
 
 
     /**
-    *   Inicializacion de la config del contrato.
+        @notice Inicializacion del contrato.
+        @dev Inicializa las variables inmutables
     */
     constructor(uint256 _bankCap, uint256 _withdrawLimit) {
         if ( _bankCap == 0 || _withdrawLimit == 0 || _withdrawLimit > _bankCap) {
@@ -106,18 +115,23 @@ contract KipuBank {
         _depositar(msg.sender, msg.value);
     }
 
-    // @notice informo del fallo del contrato. Podria haber sido _depositar() también.
+    // @notice informo del fallo del contrato. 
+    // @dev Podria haber sido _depositar() como default también.
     fallback() external payable { 
         revert ErrContractFailed();
     }
 
-    /**
-     * @notice Deposita ETH en la bóveda del remitente.
-     */
+    // @notice Deposita ETH en la bóveda del remitente.
+    // @dev
     function Depositar() external payable  {
         _depositar(msg.sender, msg.value);        
     }
 
+    /** 
+        @notice Funcion privada encargade de realizar el deposito
+        @param _cuenta addrs del usuario
+        @param _monto monto a depositar
+    */ 
     function _depositar(address _cuenta, uint256 _monto) private montoValido noExcedeLimiteBankCap {
         if ( totalBancoBalanceWei + _monto > bankCap) {
             revert ErrDepositoExcedeLimite(_monto, totalBancoBalanceWei, bankCap ); 
@@ -137,12 +151,17 @@ contract KipuBank {
 
 
     /**
-     * @notice Retira Weis de la bóveda del usuario, verifica límites por transacción.
+        @notice Retira Weis de la bóveda del usuario, verifica límites por transacción.
      */
     function Retirar() external payable  { 
         _retirar(msg.sender, msg.value);            
     }
 
+    /** 
+        @notice Funcion privada del retiro de Weis del banco
+        @param _cuenta addrs del usuario
+        @param _monto monto a depositar
+    */ 
     function _retirar(address _cuenta, uint256 _monto) private montoValido  noExcedeLimiteExtraccion{
 
         // El usuario debe tener liquidez:
@@ -164,13 +183,14 @@ contract KipuBank {
     }
     
 
+    /**  
+        @notice Vista del balance de un usuario
+        @param _cuenta usuario
+        @return total balance en Wei
+    */
     function getBalanceCuenta(address _cuenta) external view returns (uint256) {
         return _users[_cuenta].balance;
     }
 
     
-    
-
-
-
 }
