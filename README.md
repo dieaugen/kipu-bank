@@ -43,12 +43,15 @@ Para hacer le deploy  del contrato  en la red de Sepolia se selecciona "Deploy &
 ![](./img/img02.png)
 
 Se debe inicializar con valores adecuados y luego "transact": 
+
 ![](./img/img03.png)
 
 Si se hizo el deploy correctamente debe aparecer abajo de todo:
+
 ![](./img/img04.png)
 
 Para hacer pruebas solo se debe setear el valor de deposito o extraccion y hacer click en los botones visibles:
+
 ![](./img/img05.png)
 
 Cualquier operacion exitosa o con errores se observa en la caja de mensajes de Debug:
