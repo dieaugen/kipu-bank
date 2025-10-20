@@ -11,40 +11,17 @@ https://eth-sepolia.blockscout.com/tx/0xa1b1ee4b2fdf813fa365cb788b3bab7021e91581
 
 https://sepolia.etherscan.io/tx/0xa1b1ee4b2fdf813fa365cb788b3bab7021e91581255746ceb2e39b92e1f05f75
 
-## Descripción de la tarea y requisitos del Trabajo:
+## Descripción
+KipuBank es una aplicacion de smart-contract, con fines didactivos, que simula un vault o banco personal en Etherium.
 
-Tu tarea es recrear el smart contract KipuBank con toda su funcionalidad y documentación, como se describe a continuación.
-#### Características de KipuBank:
+Los usuarios pueden depositar y extraer ETH bajo ciertas restricciones de limites totales del vault (banco) y de extraccion.
+Las reglas son:
+    - Deposito: Los usuarios pueden enviar ETH al contrato y este se registra en su saldo personal.
+    - Extraccion: Existe un limite fijo maximo de extraccion por transaccion definido al momento de creacion del contrato.    
+    - Limite de capacidad: se fija un limite maximo al momento de creacion del contrato que define el maximo total de la capacidad del vault.
+    - Informar de eventos exitosos o fallas (revert)
+    - Informar de balances por cada usuario y totales del vault.
 
-    - Los usuarios pueden depositar tokens nativos (ETH) en una bóveda personal.
-
-    - Los usuarios pueden retirar fondos de su bóveda, pero solo hasta un umbral fijo por transacción, representado por una variable immutable.
-
-    - El contrato impone un límite global de depósitos (bankCap), definido durante el despliegue.
-
-    - Las interacciones internas y externas deben seguir buenas prácticas de seguridad y declaraciones revert con errores personalizados si no se cumplen las condiciones.
-
-    - Se deben emitir eventos tanto en depósitos como en retiros exitosos.
-
-    - El contrato debe llevar registro del número de depósitos y retiros.
-
-    - El contrato debe tener al menos una función external, una private y una view.
-
-#### Prácticas de seguridad a seguir:
-
-    - Usar errores personalizados en lugar de cadenas en require.
-
-    - Respetar el patrón checks-effects-interactions y las convenciones de nombres.
-
-    - Usar modificadores donde corresponda para validar la lógica.
-
-    - Manejar transferencias nativas de manera segura.
-
-    - Mantener las variables de estado limpias, legibles y bien comentadas.
-
-    - Agregar comentarios NatSpec para cada función, error y variable de estado.
-
-    - Aplicar convenciones de nombres adecuadas.
 
 #### Despliegue contrato en Remix
 
