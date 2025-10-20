@@ -12,9 +12,6 @@ https://eth-sepolia.blockscout.com/tx/0x875f550c54171e7ffa6ac315461287af0bdcb2e7
 https://sepolia.etherscan.io/tx/0x875f550c54171e7ffa6ac315461287af0bdcb2e78b55ef815c4c7f943dfbaee9
 
 
-~~https://eth-sepolia.blockscout.com/tx/0xa1b1ee4b2fdf813fa365cb788b3bab7021e91581255746ceb2e39b92e1f05f75~~
-
-~~https://sepolia.etherscan.io/tx/0xa1b1ee4b2fdf813fa365cb788b3bab7021e91581255746ceb2e39b92e1f05f75~~
 
 ## Descripción
 KipuBank es una aplicacion de smart-contract, con fines didactivos, que simula un vault o banco personal en Etherium.
