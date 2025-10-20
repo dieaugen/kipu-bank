@@ -15,11 +15,17 @@ https://sepolia.etherscan.io/tx/0xa1b1ee4b2fdf813fa365cb788b3bab7021e91581255746
 KipuBank es una aplicacion de smart-contract, con fines didactivos, que simula un vault o banco personal en Etherium.
 
 Los usuarios pueden depositar y extraer ETH bajo ciertas restricciones de limites totales del vault (banco) y de extraccion.
-Las reglas son:
+
+Reglas:
+
     - Deposito: Los usuarios pueden enviar ETH al contrato y este se registra en su saldo personal.
+
     - Extraccion: Existe un limite fijo maximo de extraccion por transaccion definido al momento de creacion del contrato.    
+
     - Limite de capacidad: se fija un limite maximo al momento de creacion del contrato que define el maximo total de la capacidad del vault.
+
     - Informar de eventos exitosos o fallas (revert)
+    
     - Informar de balances por cada usuario y totales del vault.
 
 
