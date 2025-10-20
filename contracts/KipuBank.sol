@@ -153,8 +153,12 @@ contract KipuBank {
     /**
         @notice Retira Weis de la bóveda del usuario, verifica límites por transacción.
      */
-    function Retirar() external payable  { 
-        _retirar(msg.sender, msg.value);            
+    function Retirar(uint256 monto) external   { 
+        if (monto == 0) revert ErrMontoCero();
+        if ( monto > limitMaxRetiroWei) {
+            revert ErrRetiroExcedeLimite( limitMaxRetiroWei); 
+        }
+        _retirar(msg.sender, monto);            
     }
 
     /** 
@@ -162,22 +166,23 @@ contract KipuBank {
         @param _cuenta addrs del usuario
         @param _monto monto a depositar
     */ 
-    function _retirar(address _cuenta, uint256 _monto) private montoValido  noExcedeLimiteExtraccion{
+    function _retirar(address _cuenta, uint256 _monto) private {
 
         // El usuario debe tener liquidez:
          if (_users[ _cuenta ].balance < _monto) {
             revert ErrBalanceUsuarioInsuficiente(_monto, _users[ _cuenta ].balance);
         }
         
+        (bool success, ) = payable(_cuenta).call{value: _monto}("");
+        if (!success) {
+            revert ErrContractFailed();
+        }
+
         _users[_cuenta].balance -= _monto;
         _users[_cuenta].cantretiros ++;
 
         totalBancoBalanceWei -= _monto;
         countTotalExtracciones++;
-
-        // @TODO: hacer _tranferrir mediante msg.sender.call() 
-        //_transferir(payable(_addr), _monto);
-
 
         emit Retiro(_cuenta, _monto, _users[_cuenta].balance, totalBancoBalanceWei);
     }
